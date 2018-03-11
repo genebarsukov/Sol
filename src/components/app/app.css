@@ -1,5 +1,9 @@
 .app {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
 }
 
 .app-logo {
@@ -8,12 +12,16 @@
     text-align: left;
 }
 
+@keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 .app-header {
-    background-color: rgb(27, 32, 41);
-    height: 80px;
-    padding: 20px;
+    height: 90px;
     color: white;
     display: flex;
+    background-color: rgb(27, 32, 41);
 }
 
 .app-title {
@@ -24,18 +32,29 @@
 }
 
 .app-body {
-    display: inline-block;
-    width: 100%;
+    display: flex;
     height: 100%;
     background-color: rgb(50, 58, 75);
-    color: #FFB200
+    color: #FFB200;
 }
 
 .app-intro {
-    font-size: large;
+    padding-top: 0.25rem;
+    font-size: small;
 }
 
-@keyframes App-logo-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.main-container {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.page-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: inset 2px 2px 7px 0px rgb(27, 32, 41);
+    
 }

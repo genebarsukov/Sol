@@ -6,7 +6,7 @@ class DataPage extends Component {
         return (
             <div className="data-page">
                 <div className="data-page-header">
-                    Page Title
+                    {this.props.title}
                 </div>
                 <div className="data-page-body">
                     <div className="graph-container">

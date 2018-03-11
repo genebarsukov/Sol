@@ -1,15 +1,25 @@
 .data-menu {
-
+    background-color: rgb(27, 32, 41);
+    height: 100%;
 }
 
 .data-menu-header {
-    
+    padding: 1rem;
+    border-top: 1px solid rgb(50, 58, 75);
+    border-bottom: 1px solid rgb(50, 58, 75);
 }
 
 .data-menu-body {
-    
+
 }
 
 .data-menu-button {
-    
+    padding: 1rem;
+    color: #FFF;
+    border-bottom: 1px solid rgb(50, 58, 75);
+}
+
+.data-menu-button:hover {
+    cursor: pointer;
+    background-color: rgb(50, 58, 75);
 }

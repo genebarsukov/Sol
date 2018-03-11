@@ -1,5 +1,7 @@
 .data-page {
-    
+    padding: 1rem;
+    flex: 1 1 auto;
+    color: #FFF;
 }
 
 .data-page-header {
