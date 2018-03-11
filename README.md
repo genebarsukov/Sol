@@ -2,7 +2,7 @@ Sol
 =========================
 This is a Demo App
 
-## React
+React
 =========================
 Used to render UI components from API data
 
