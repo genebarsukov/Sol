@@ -41,6 +41,7 @@ module.exports = function(app, db) {
                 res.send({ 'error': 'error getting all records' }); 
                 console.log(error);
             } else {
+              //  res.writeHead(200, {'Access-Control-Allow-Origin': 'true'});
                 res.send(result);
                 console.log(result);
             } 
@@ -50,11 +51,11 @@ module.exports = function(app, db) {
     // POST Insert record
     app.post(appPath + '/record/new', (req, res) => {
         const record = {
-            year: sanitize(req.body.year),
-            month: sanitize(req.body.month),
-            kwh: sanitize(req.body.kwh),
-            bill: sanitize(req.body.bill),
-            savings: sanitize(req.body.savings)
+            year: sanitize(req.body.year) ? sanitize(req.body.year) : '',
+            month: sanitize(req.body.month) ? sanitize(req.body.month) : '',
+            kwh: sanitize(req.body.kwh) ? sanitize(req.body.kwh) : '',
+            bill: sanitize(req.body.bill) ? sanitize(req.body.bill) : '',
+            savings: sanitize(req.body.savings) ? sanitize(req.body.savings) : ''
         };
         db.collection(dbName).insert(record, (error, result) => {
           if (error) {
@@ -74,11 +75,11 @@ module.exports = function(app, db) {
             _id: new ObjectID(id)
         };
         const record = {
-            year: sanitize(req.body.year),
-            month: sanitize(req.body.month),
-            kwh: sanitize(req.body.kwh),
-            bill: sanitize(req.body.bill),
-            savings: sanitize(req.body.savings)
+            year: sanitize(req.body.year) ? sanitize(req.body.year) : '',
+            month: sanitize(req.body.month) ? sanitize(req.body.month) : '',
+            kwh: sanitize(req.body.kwh) ? sanitize(req.body.kwh) : '',
+            bill: sanitize(req.body.bill) ? sanitize(req.body.bill) : '',
+            savings: sanitize(req.body.savings) ? sanitize(req.body.savings) : ''
         };
         db.collection(dbName).update(idObject, record, (error, result) => {
           if (error) {
