@@ -6,35 +6,54 @@ import DataPage from '../data-page/data-page';
 import pages from '../../pages';
 
 class App extends Component {
-    // props = {
-    //     pages: {
-
-    //     }
-    // };
 
     constructor() {
         super();
-        console.log(pages);
+        this.state = {
+            menuState: 'summary'
+        };
+
     }
 
+    /**
+     * App component stores menu states
+     * This method is invoked by the child data manu component
+     * @param {*} newState Name of menu item clicked
+     */
+    setMenuState(newState) {
+        this.setState({
+            menuState: newState
+        })
+    }
+
+    /**
+     * This is used by the child data-page component to get the cureent menus state
+     */
+    getMenuState() {
+        return this.state.menuState;
+    }
+
+    /**
+     * Template rendering
+     */
     render() {
         return (
             <div className="app">
                 <div className="app-header">
                     <img src={logo} className="app-logo" alt="logo" />
                     <h1 className="app-title">
-                        Sol Solar Dash
+                        Your Solar Dashboard
                     </h1>
                 </div>
                 <div className="app-body">
 
                     <div className="main-container">
-                        <DataMenu pages={pages} />
+                        <DataMenu pages={ pages } 
+                                  getMenuState={ this.getMenuState.bind(this) } 
+                                  setMenuState={ this.setMenuState.bind(this) } />
                         <div className="page-container">
-                            <div className="app-intro">
-                                Analyze your solar energy usage stats and savings
-                            </div>
-                            <DataPage />
+                            <DataPage pages={ pages } 
+                                      getMenuState={ this.getMenuState.bind(this) } />
                         </div>
                     </div>
                 </div>

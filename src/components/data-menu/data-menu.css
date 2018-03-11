@@ -5,7 +5,6 @@
 
 .data-menu-header {
     padding: 1rem;
-    border-top: 1px solid rgb(50, 58, 75);
     border-bottom: 1px solid rgb(50, 58, 75);
 }
 
@@ -21,5 +20,9 @@
 
 .data-menu-button:hover {
     cursor: pointer;
+    background-color: rgba(50, 58, 75, 0.75);
+}
+
+.data-menu-button.active {
     background-color: rgb(50, 58, 75);
 }

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './data-row.css';
 
 class DataRow extends Component {
+    /**
+     * Template rendering
+     */
     render() {
         return (
             <div className="data-row">
