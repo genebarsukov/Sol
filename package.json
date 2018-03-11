@@ -4,15 +4,21 @@
   "description": "solstice demo app",
   "main": "index.js",
   "scripts": {
-    "test": "test",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "author": "Gene",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "mongodb": "^2.2.16"
+    "mongodb": "^2.2.16",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.1.1"
   },
   "devDependencies": {
     "nodemon": "^1.17.1"
