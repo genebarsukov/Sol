@@ -1,3 +1,4 @@
+var sanitize = require('mongo-sanitize');
 var ObjectID = require('mongodb').ObjectID;
 const appSettings = require('../../config/app-settings');
 const dbSettings = require('../../config/app-settings');
@@ -18,7 +19,7 @@ module.exports = function(app, db) {
     
     // GET Single record by id
     app.get(appPath + '/record/:id', (req, res) => {
-        const id = req.params.id;
+        const id = sanitize(req.params.id);
         const idObject = {
             _id: new ObjectID(id)
         };
@@ -34,7 +35,7 @@ module.exports = function(app, db) {
     });
 
     // GET All records
-    app.get(appPath + '/allRecords', (req, res) => {
+    app.get(appPath + '/all', (req, res) => {
         db.collection(dbName).find({}).toArray((error, result) => {
             if (error) {
                 res.send({ 'error': 'error getting all records' }); 
@@ -49,35 +50,35 @@ module.exports = function(app, db) {
     // POST Insert record
     app.post(appPath + '/record/new', (req, res) => {
         const record = {
-            year: req.body.year, 
-            month: req.body.month,
-            kwh: req.body.kwh,
-            bill: req.body.bill,
-            savings: req.body.savings
+            year: sanitize(req.body.year),
+            month: sanitize(req.body.month),
+            kwh: sanitize(req.body.kwh),
+            bill: sanitize(req.body.bill),
+            savings: sanitize(req.body.savings)
         };
         db.collection(dbName).insert(record, (error, result) => {
           if (error) {
             res.send({ 'error': 'error inserting' }); 
             console.log(error);
           } else {
-            res.send('inserted: ' + record._id);
-            console.log('inserted: ' + record._id);
+            res.send('inserted: ' + sanitize(record._id));
+            console.log('inserted: ' + sanitize(record._id));
           }
         });
     });
 
     // PUT Update record by id
     app.put(appPath + '/record/:id', (req, res) => {
-        const id = req.params.id;
+        const id = sanitize(req.params.id);
         const idObject = {
             _id: new ObjectID(id)
         };
         const record = {
-            year: req.body.year,
-            month: req.body.month,
-            kwh: req.body.kwh,
-            bill: req.body.bill,
-            savings: req.body.savings
+            year: sanitize(req.body.year),
+            month: sanitize(req.body.month),
+            kwh: sanitize(req.body.kwh),
+            bill: sanitize(req.body.bill),
+            savings: sanitize(req.body.savings)
         };
         db.collection(dbName).update(idObject, record, (error, result) => {
           if (error) {
@@ -92,7 +93,7 @@ module.exports = function(app, db) {
 
     // DELETE Single record by id
     app.delete(appPath + '/record/:id', (req, res) => {
-        const id = req.params.id;
+        const id = sanitize(req.params.id);
         const idObject = {
             _id: new ObjectID(id)
         };
