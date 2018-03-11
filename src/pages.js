@@ -1,7 +1,7 @@
 const pages = {
     summary: {
         name: 'Summmary',
-        title: 'Solar energy usage summary'
+        title: 'All summary stats'
     },
     usage: {
         name: 'Usage',

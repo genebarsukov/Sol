@@ -11,13 +11,18 @@ class DataPage extends Component {
         }
     }
     
+    /**
+     * Get table data from API on each page load
+     */
     componentDidMount() {
-        this.buildDataTable(this.props.getMenuState().toLowerCase())
+        this.getTableData(this.props.getMenuState().toLowerCase())
     }
+
     /**
      * Template rendering
      */
     render() {
+        // Build table data rows from returned data set
         let tableRows = this.state.tableData
             .map(row => {
                 return (
@@ -27,9 +32,19 @@ class DataPage extends Component {
                         month={row.month}
                         usage={row.kwh}
                         bill={row.bill}
-                        savings={row.savings==null ? ' ' : row.savings} />
+                        savings={row.savings}
+                        menuState={this.props.getMenuState().toLowerCase()}/>
                 );
         });
+
+        // Do not build graph for summary page
+        let graphContainer = null;
+
+        if (this.props.getMenuState().toLowerCase() !== 'summary') {
+            graphContainer = <div className="graph-container">
+                {this.buildGraph(this.props.getMenuState().toLowerCase())}
+            </div>
+        }
 
         return (
             <div className="data-page">
@@ -37,13 +52,11 @@ class DataPage extends Component {
                     { this.props.pages[this.props.getMenuState().toLowerCase()].title }
                 </div>
                 <div className="data-page-body">
-                    <div className="graph-container">
-                        {this.buildGraph(this.props.getMenuState().toLowerCase())}
-                    </div>
+                    { graphContainer }
                     <div className="table-container">
                         <div className="data-table">
-                            <DataRow isHeader={true} editable={false} />
-                            {tableRows}
+                            <DataRow isHeader = { true } editable = { false } menuState = { this.props.getMenuState().toLowerCase() } />
+                            { tableRows }
                         </div>
                     </div>
                 </div>
@@ -55,14 +68,17 @@ class DataPage extends Component {
         return '';
     }
 
-    buildDataTable(metricType=null) {
-
+    /**
+     * Get table data from an API
+     * @param {*} metricType 
+     */
+    getTableData(metricType) {
         let baseUrl = 'http://codewrencher.com:8000/sol'
-        
+
         fetch(baseUrl + '/all')
             .then((response) => response.json())
             .then((responseJson) => {
-                this.setState({ tableData: responseJson})
+                this.setState({ tableData: responseJson});
             })
             .catch(error => console.error(error));
     }
