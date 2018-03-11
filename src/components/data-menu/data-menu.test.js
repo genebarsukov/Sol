@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './data-menu';
+import DataMenu from './data-menu';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');

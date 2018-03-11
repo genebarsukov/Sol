@@ -19,6 +19,29 @@ class DataPage extends Component {
     }
 
     /**
+     * Render a chart component
+     * @param {*} metricType What kind of data will be displayed on the chart
+     */
+    renderChart(metricType) {
+        return '';
+    }
+
+    /**
+     * Get table data from an API
+     * @param {*} metricType 
+     */
+    getTableData(metricType) {
+        let baseUrl = 'http://codewrencher.com:8000/sol'
+
+        fetch(baseUrl + '/all')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({ tableData: responseJson});
+            })
+            .catch(error => console.error(error));
+    }
+    
+    /**
      * Template rendering
      */
     render() {
@@ -42,7 +65,7 @@ class DataPage extends Component {
 
         if (this.props.getMenuState().toLowerCase() !== 'summary') {
             graphContainer = <div className="graph-container">
-                {this.buildGraph(this.props.getMenuState().toLowerCase())}
+                { this.renderChart(this.props.getMenuState().toLowerCase()) }
             </div>
         }
 
@@ -62,25 +85,6 @@ class DataPage extends Component {
                 </div>
             </div>
         );
-    }
-
-    buildGraph() {
-        return '';
-    }
-
-    /**
-     * Get table data from an API
-     * @param {*} metricType 
-     */
-    getTableData(metricType) {
-        let baseUrl = 'http://codewrencher.com:8000/sol'
-
-        fetch(baseUrl + '/all')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({ tableData: responseJson});
-            })
-            .catch(error => console.error(error));
     }
 
 }
