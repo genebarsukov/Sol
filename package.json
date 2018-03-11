@@ -1,29 +1,30 @@
 {
-  "name": "sol",
-  "version": "1.0.0",
-  "description": "solstice demo app",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon server.js",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "author": "Gene",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "compression": "^1.7.2",
-    "express": "^4.16.2",
-    "helmet": "^3.12.0",
-    "mongo-sanitize": "^1.0.0",
-    "mongodb": "^2.2.16",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1"
-  },
-  "devDependencies": {
-    "nodemon": "^1.17.1"
-  }
+    "name": "sol",
+    "version": "1.0.0",
+    "description": "solstice demo app",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon server.js",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject"
+    },
+    "author": "Gene",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "compression": "^1.7.2",
+        "express": "^4.16.2",
+        "helmet": "^3.12.0",
+        "mongo-sanitize": "^1.0.0",
+        "mongodb": "^2.2.16",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0",
+        "react-scripts": "1.1.1",
+        "d3": "^4.11.0"
+    },
+    "devDependencies": {
+        "nodemon": "^1.17.1"
+    }
 }
