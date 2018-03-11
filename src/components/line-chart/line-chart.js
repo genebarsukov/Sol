@@ -10,6 +10,23 @@ import * as d3Array from 'd3-array';
 
 class LineChart extends Component {
 
+    constructor() {
+        super();
+
+        this.state = {
+            svg: null,
+            line: null,
+            x: null,
+            y: null,
+            width: 900,
+            height: 350,
+            margin: { top: 20, right: 20, bottom: 30, left: 50 }
+        }
+        this.setState({
+            width: this.state.width - this.state.margin.left - this.state.margin.right,
+            height: this.state.height - this.state.margin.top - this.state.margin.bottom
+        });
+    }
     /**
      * Build a d3 line chart from one data stream vs time
      */
@@ -18,15 +35,15 @@ class LineChart extends Component {
         this.initSvg();
         this.initAxis();
         this.drawAxis();
-        this.drawLine(line);
+        this.drawLine(this.formatDataForPlotting(this.props.chartData));
     }
 
     /**
      * The chart svg needs to be cleared before it can be updated (for the most part)
      */
     clearSvg() {
-        if (this.svg) {
-            this.svg.selectAll('*').remove();
+        if (this.state.svg) {
+            this.state.svg.selectAll('*').remove();
         }
     }
 
@@ -34,36 +51,36 @@ class LineChart extends Component {
      * Set d3 to act on the svg element present in this component
      */
     initSvg() {
-        this.svg = d3.select('svg.price-chart')
-                     .append('g')
-                     .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+        let updatedSvg = d3.select('svg.price-chart')
+                           .append('g')
+                           .attr('transform', 'translate(' + this.state.margin.left + ',' + this.state.margin.top + ')');
+        this.setState({ svg: updatedSvg });
     }
 
     /**
      * Calculate our axis scaling with our current data set
      */
     initAxis() {
-        this.x = d3Scale.scaleTime().range([0, this.width]);
-        this.y = d3Scale.scaleLinear().range([this.height, 0]);
-        this.x.domain(d3Array.extent(allData, (d) => d.date ));
-        this.y.domain(d3Array.extent(allData, (d) => d.value ));
+        this.setState({ x: d3Scale.scaleTime().range([0, this.state.width]) });
+        this.setState({ y: d3Scale.scaleLinear().range([this.state.height, 0]) });
+        this.state.x.domain(d3Array.extent(this.props.chartData, (d) => d.date ));
+        this.state.y.domain(d3Array.extent(this.props.chartData, (d) => d.value ));
     }
 
     /**
      * Draw the axis on the chart svg with d2
      */
     drawAxis() {
-        
         // X axis
-        this.svg.append('g')
+        this.state.svg.append('g')
                 .attr('class', 'axis axis--x')
                 .attr('transform', 'translate(0,' + this.height + ')')
-                .call(d3Axis.axisBottom(this.x));
+                .call(d3Axis.axisBottom(this.state.x));
 
         // Y axis left
-        this.svg.append('g')
+        this.state.svg.append('g')
             .attr('class', 'axis axis--y')
-            .call(d3Axis.axisLeft(this.y))
+            .call(d3Axis.axisLeft(this.state.y))
             .append('text')
             .attr('class', 'axis-title')
             .attr('transform', 'rotate(-90)')
@@ -73,48 +90,92 @@ class LineChart extends Component {
             .text('Price ($)');
 
         // Add X gridlines
-        this.svg.append('g')
+        this.state.svg.append('g')
                 .attr('class', 'grid')
                 .attr('opacity', '0.1')
                 .attr('transform', 'translate(0,' + this.height + ')')
                 .call(this.makeXGridlines()
-                    .tickSize(-this.height)
+                    .tickSize(-this.state.height)
                     .tickFormat('')
                 );
 
         // Add Y gridlines
-        this.svg.append('g')
+        this.state.svg.append('g')
                 .attr('class', 'grid')
                 .attr('opacity', '0.1')
                 .call(this.makeYGridlines()
-                    .tickSize(-this.width)
+                    .tickSize(-this.state.width)
                     .tickFormat('')
                 );
     }
 
+    makeXGridlines() {
+        return d3Axis.axisBottom(this.state.x);
+    }
+
+    makeYGridlines() {
+        return d3Axis.axisLeft(this.state.y);
+    }
+
+    /**
+     * Format the dataset we originally received from our database into a format d3 likes
+     * The new data object will contain its plot data in an array under the data key
+     * The array will consist of objects containint a Date object and a numerical value object
+     * @param {*} rawData: Format: [{
+     *      _id: 'id',
+     *      year, 'year',
+     *      month: 'month',
+     *      kwh: 'kwh',
+     *      bill: 'bill',
+     *      savings: 'savings'
+     * }]
+     */
+    formatDataForPlotting(rawData) {
+        let formattedData = {
+            data: [],
+            color: this.props.lineColor
+        }
+        
+        let dataKey = this.props.menuState;
+        if (dataKey === 'summary') {
+            return formattedData;
+        }
+        if (dataKey === 'usage') {
+            dataKey = 'kwh';
+        }
+
+        for (let dataPoint of rawData) {
+            let date = new Date();
+            date.setFullYear(dataPoint.year, dataPoint.month, 0);
+            let value = parseInt(dataPoint[dataKey])
+
+            formattedData.data.push({ date: date, value: value });
+        }
+        console.log(formattedData);
+        return formattedData;
+    }
 
     /**
      * Create our line graph from our svg element
      * Plot our data on the chart
-     * @param {*} priceLine 
+     * @param {*} lineData The data key of this object is an array of data point objects with date <Date> and value <number> keys
+     * it is used to plot the main chart line.
+     * Other parameters in this object can be used to configure the color of the line and other parameters
      */
-    drawLine(priceLine) {
-        this.line = d3Shape.line()
-                           .x( (d) => this.x(d.date) )
-                           .y( (d) => this.y(d.value) )
+    drawLine(lineData) {
+        let line = d3Shape.line()
+                          .x( (d) => this.state.x(d.date) )
+                          .y( (d) => this.state.y(d.value) )
 
-        // Add the price line
-        if (this.lineType === 'line') {
-            this.svg.append('path')
-                    .datum(priceLine.data)
-                    .attr('class', 'line line-' + priceLine.index)
-                    .attr('fill', 'none')
-                    .attr('stroke', priceLine.color)
-                    .attr('stroke-linejoin', 'round')
-                    .attr('stroke-linecap', 'round')
-                    .attr('stroke-width', 1.5)
-                    .attr('d', this.line);
-        }
+        this.state.svg.append('path')
+                .datum(lineData.data)
+                .attr('class', 'line line-1')
+                .attr('fill', 'none')
+                .attr('stroke', lineData.color)
+                .attr('stroke-linejoin', 'round')
+                .attr('stroke-linecap', 'round')
+                .attr('stroke-width', 1.5)
+                .attr('d', line);
     }
 
     /**
@@ -128,12 +189,12 @@ class LineChart extends Component {
                 </div>
                 <div className="line-chart-body">
                     <svg className="line-chart-area" 
-                        width = { this.props.width }
-                        height = { this.props.height } >
+                        width = { this.state.width }
+                        height = { this.state.height } >
                     </svg>
                 </div>
             </div>
         );
     }
 }
-export default DataMenu;
+export default LineChart;

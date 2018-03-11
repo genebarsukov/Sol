@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './data-page.css';
 import DataRow from '../data-row/data-row';
+import LineChart from '../line-chart/line-chart';
 
 class DataPage extends Component {
 
@@ -23,7 +24,7 @@ class DataPage extends Component {
      * @param {*} metricType What kind of data will be displayed on the chart
      */
     renderChart(metricType) {
-        return '';
+        return ( <LineChart  menuState = { metricType } lineColor = { 'steelblue' } /> );
     }
 
     /**
