@@ -77,7 +77,7 @@ class DataPage extends Component {
             let value = parseInt(dataPoint[dataKey], 10);
             formattedData.data.push({ date: date, value: value });
         }
-        formattedData.data.sort(function(a,b) {return (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0);} );
+        formattedData.data.sort(function(a,b) {return (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0);});
 
         let flattenedData = parseFlatArray(formattedData.data, "date", ["value"]);
 
@@ -92,6 +92,17 @@ class DataPage extends Component {
         fetch(baseUrl + '/all')
             .then((response) => response.json())
             .then((responseJson) => {
+                responseJson.sort(function(a,b) {
+                    if ((parseInt(a.year, 10) * 12 + parseInt(a.month, 10))  > (parseInt(b.year, 10) * 12 + parseInt(b.month, 10))) {
+                        return 1;
+                    }
+                    else if ((parseInt(a.year, 10) * 12 + parseInt(a.month, 10))  < (parseInt(b.year, 10) * 12 + parseInt(b.month, 10))) {
+                        return -1;
+                    }
+                    else {
+                        return 0;
+                    }
+                });
                 this.setState({ tableData: responseJson});
             })
             .catch(error => console.error(error));
