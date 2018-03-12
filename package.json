@@ -1,5 +1,6 @@
 {
     "name": "sol",
+    "homepage" : "http://codewrencher.com/modules/sol",
     "version": "1.0.0",
     "description": "solstice demo app",
     "main": "index.js",
