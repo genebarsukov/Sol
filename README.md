@@ -1,5 +1,5 @@
-App: http://codewrencher.com:5000/
-API: http://codewrencher.com:8000/sol
+- App: http://codewrencher.com:5000/
+- API: http://codewrencher.com:8000/sol
 
 Sol
 =========================
