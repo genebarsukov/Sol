@@ -61,3 +61,21 @@
     box-shadow: inset 2px 2px 7px 0px rgb(27, 32, 41);
     
 }
+
+.admin-button {
+    margin: 1rem;
+    padding: 1rem;
+    font-size: medium;
+    border: 1px solid rgb(50, 58, 75);
+}
+
+.admin-button:hover {
+    background-color: rgb(50, 58, 75);
+    cursor: pointer;
+}
+
+.admin-button.active {
+    background-color: #FFB200;
+    color: rgb(27, 32, 41);
+    
+}

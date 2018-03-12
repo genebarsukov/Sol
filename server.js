@@ -8,6 +8,7 @@ var compression = require('compression');
 var helmet = require('helmet');
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(compression());
 app.use(helmet());
 app.use(function (req, res, next) {

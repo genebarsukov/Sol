@@ -20,6 +20,7 @@ module.exports = function(app, db) {
     // GET Single record by id
     app.get(appPath + '/record/:id', (req, res) => {
         const id = sanitize(req.params.id);
+        console.log(id);
         const idObject = {
             _id: new ObjectID(id)
         };
@@ -74,13 +75,17 @@ module.exports = function(app, db) {
         const idObject = {
             _id: new ObjectID(id)
         };
+        console.log(id);
+        console.log(req.body);
+
         const record = {
-            year: sanitize(req.body.year) ? sanitize(req.body.year) : '',
-            month: sanitize(req.body.month) ? sanitize(req.body.month) : '',
-            kwh: sanitize(req.body.kwh) ? sanitize(req.body.kwh) : '',
-            bill: sanitize(req.body.bill) ? sanitize(req.body.bill) : '',
+            year: sanitize(req.body.year) ? sanitize(req.body.year) : 'no',
+            month: sanitize(req.body.month) ? sanitize(req.body.month) : 'no',
+            kwh: sanitize(req.body.kwh) ? sanitize(req.body.kwh) : 'no',
+            bill: sanitize(req.body.bill) ? sanitize(req.body.bill) : 'no',
             savings: sanitize(req.body.savings) ? sanitize(req.body.savings) : ''
         };
+        console.log(record);
         db.collection(dbName).update(idObject, record, (error, result) => {
           if (error) {
             res.send({ 'error': 'error updating' }); 

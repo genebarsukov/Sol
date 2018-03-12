@@ -10,7 +10,9 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            menuState: 'summary'
+            menuState: 'summary',
+            adminMode: false,
+            isAuthenticatedAdmin: true
         };
 
     }
@@ -33,6 +35,19 @@ class App extends Component {
         return this.state.menuState;
     }
 
+    getAdminMode() {
+        return this.state.adminMode;
+    }
+
+    toggleAdminMode() {
+        if (this.state.isAuthenticatedAdmin) {
+            this.setState({ adminMode: (this.state.adminMode ? false : true) })
+        } else {
+            this.setState({ adminMode: false })
+        }
+
+    }
+
     /**
      * Template rendering
      */
@@ -44,16 +59,21 @@ class App extends Component {
                     <h1 className="app-title">
                         Your Solar Dashboard
                     </h1>
+                    <div className = { 'admin-button' + (this.state.adminMode ? ' active' : '') } 
+                         onClick = { this.toggleAdminMode.bind(this) } > 
+                        Admin Mode
+                    </div>
                 </div>
                 <div className="app-body">
 
                     <div className="main-container">
                         <DataMenu pages={ pages } 
-                                  getMenuState={ this.getMenuState.bind(this) } 
-                                  setMenuState={ this.setMenuState.bind(this) } />
+                                  getMenuState = { this.getMenuState.bind(this) } 
+                                  setMenuState = { this.setMenuState.bind(this) } />
                         <div className="page-container">
-                            <DataPage pages={ pages } 
-                                      getMenuState={ this.getMenuState.bind(this) } />
+                            <DataPage pages = { pages } 
+                                      getMenuState = { this.getMenuState.bind(this) }
+                                      getAdminMode = { this.getAdminMode.bind(this) } />
                         </div>
                     </div>
                 </div>

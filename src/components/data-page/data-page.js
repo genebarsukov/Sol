@@ -3,6 +3,9 @@ import './data-page.css';
 import DataRow from '../data-row/data-row';
 import LineChart, { parseFlatArray } from 'react-linechart';
 import * as d3 from 'd3';
+let update = require('immutability-helper');
+let baseUrl = 'http://codewrencher.com:8000/sol'
+
 
 class DataPage extends Component {
 
@@ -74,6 +77,8 @@ class DataPage extends Component {
             let value = parseInt(dataPoint[dataKey], 10);
             formattedData.data.push({ date: date, value: value });
         }
+        formattedData.data.sort(function(a,b) {return (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0);} );
+
         let flattenedData = parseFlatArray(formattedData.data, "date", ["value"]);
 
         return flattenedData;
@@ -84,8 +89,6 @@ class DataPage extends Component {
      * @param {*} metricType 
      */
     getTableData(metricType) {
-        let baseUrl = 'http://codewrencher.com:8000/sol'
-
         fetch(baseUrl + '/all')
             .then((response) => response.json())
             .then((responseJson) => {
@@ -95,21 +98,85 @@ class DataPage extends Component {
     }
     
     /**
+     * Update row
+     */
+    updateCellValue(rowId, rowIndex, columnType, value) {
+        if (this.state.tableData[rowIndex]._id === rowId) {
+            columnType = columnType === 'usage' ? 'kwh' : columnType;
+            let recordToUpdate = update(this.state.tableData[rowIndex], {[columnType]: {$set: value}}); 
+            let updatedData = update(this.state.tableData, {$splice: [[rowIndex, 1, recordToUpdate]]});
+            
+            this.setState({tableData: updatedData});
+            this.updateRecord(recordToUpdate);
+        } else {
+            console.warning('Tried to update recoed by id an index do not match: ' + rowId);
+        }
+    }
+    
+    /**
+     * Update record in db via API call
+     */
+    updateRecord(record) {
+        let formBody = [];
+
+        for (let prop in record) {
+            let encodedKey = encodeURIComponent(prop);
+            let encodedValue = encodeURIComponent(record[prop]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        fetch(baseUrl + '/record/' + record._id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        })
+        .then((response) => {
+            if (response.updated === record._id) {
+                console.log('update successful');
+            }
+        })
+        .catch(error => console.error(error));
+    }
+    /**
+     * Insert row
+     */
+    insertRow() {
+        console.log('inserting row');
+    }
+    /**
+     * Delete row
+     */
+    deleteRow(rowId) {
+        console.log('deleting row :' + rowId);
+    }
+
+    /**
      * Template rendering
      */
     render() {
         // Build table data rows from returned data set
+        let index = -1;
         let tableRows = this.state.tableData
             .map(row => {
+                index += 1;
                 return (
                     <DataRow
+                        id={row._id}
+                        index={index}
                         key={row._id}
                         year={row.year}
                         month={row.month}
                         usage={row.kwh}
                         bill={row.bill}
                         savings={row.savings}
-                        menuState={this.props.getMenuState().toLowerCase()}/>
+                        menuState={this.props.getMenuState().toLowerCase()}
+                        editable={this.props.getAdminMode()}
+                        updateCellValue={this.updateCellValue.bind(this)}
+                        insertRow={this.insertRow.bind(this)}
+                        deleteRow={this.deleteRow.bind(this)}/>
                 );
         });
 

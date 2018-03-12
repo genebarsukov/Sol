@@ -3,9 +3,24 @@ import './data-row.css';
 
 class DataRow extends Component {
 
-    handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
+    constructor() {
+        super();
+        
+        this.state = {
+            year: null,
+            month: null,
+            usage: null,
+            bill: null,
+            savings: null
+        }
+        this.handleChange = this.handleChange.bind(this);
+        
     }
+
+    handleChange(event) {
+        this.props.updateCellValue(this.props.id, this.props.index, event.target.name, event.target.value);
+    }
+
     /**
      * Template rendering
      */
@@ -16,7 +31,7 @@ class DataRow extends Component {
         if ((this.props.menuState === 'summary' || this.props.menuState === 'usage') &&
             ((this.props.usage !== null && this.props.usage !== undefined) || this.props.isHeader)) {
             usageCell = <input name = 'usage'
-                               className = {'data-cell' + ('' ? this.props.editable : ' read-only')}
+                               className = {'data-cell' + (this.props.editable ? ' editable' : ' read-only')}
                                value = {(this.props.isHeader ? 'Usage' : this.props.usage)}
                                readOnly = {!this.props.editable}
                                onChange = {this.handleChange} />
@@ -24,7 +39,7 @@ class DataRow extends Component {
         if ((this.props.menuState === 'summary' || this.props.menuState === 'bill') &&
             ((this.props.bill !== null && this.props.bill !== undefined) || this.props.isHeader)) {
             billCell = <input name = 'bill'
-                              className = {'data-cell' + ('' ? this.props.editable : ' read-only')}
+                              className = {'data-cell' + (this.props.editable ? ' editable' : ' read-only')}
                               value = {(this.props.isHeader ? 'Bill' : this.props.bill)}
                               readOnly = {!this.props.editable}
                               onChange = {this.handleChange} />
@@ -32,7 +47,7 @@ class DataRow extends Component {
         if ((this.props.menuState === 'summary' || this.props.menuState === 'savings') &&
             ((this.props.savings !== null && this.props.savings !== undefined) || this.props.isHeader)) {
             savingsCell = <input name = 'savings'
-                                 className = {'data-cell' + ('' ? this.props.editable : ' read-only')}
+                                 className = {'data-cell' + (this.props.editable ? ' editable' : ' read-only')}
                                  value = {(this.props.isHeader ? 'Savings' : this.props.savings)}
                                  readOnly = {!this.props.editable}
                                  onChange = {this.handleChange} />
@@ -42,12 +57,12 @@ class DataRow extends Component {
             <div className={ 'data-row ' + (this.props.isHeader ? ' header-row' : '') }>
                 <div className="data-row-body">
                     <input name = 'year'
-                           className = {'data-cell' + ('' ? this.props.editable : ' read-only')}
+                           className = {'data-cell' + (this.props.editable ? ' editable' : ' read-only')}
                            value = {(this.props.isHeader ? 'Year' : this.props.year)}
                            readOnly = {!this.props.editable}
                            onChange = {this.handleChange} />
                     <input name = 'month'
-                           className = {'data-cell' + ('' ? this.props.editable : ' read-only')}
+                           className = {'data-cell' + (this.props.editable ? ' editable' : ' read-only')}
                            value = {(this.props.isHeader ? 'Month' : this.props.month)}
                            readOnly = {!this.props.editable}
                            onChange = {this.handleChange} />
