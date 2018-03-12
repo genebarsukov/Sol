@@ -1,3 +1,6 @@
+App: http://codewrencher.com:5000/
+API: http://codewrencher.com:8000/sol
+
 Sol
 =========================
 This is a Demo App. THis is a simple single page app. It has a menu on the left hand side which will allow tou to flip between different data sets.
