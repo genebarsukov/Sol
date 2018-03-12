@@ -49,11 +49,13 @@ We render both tables and graphs.
 Here are the relationships between the components.
 - App renders the main page. It is a parent of DataMenu and DataPage. It helps facilitate interaction between these two. It also holds sone of the important globa states such and the current menu page and whethe Admin mods is on or off.
 
--DataMenu is just a menu. It is simply giving out different parameters to DataPage which then decides how to render the data based on which page we are on.
+- DataMenu is just a menu. It is simply giving out different parameters to DataPage which then decides how to render the data based on which page we are on.
 
--DataRow is responsible for managing table data rows and updating cell values in the db after they change in the UI.
+- DataRow is responsible for managing table data rows and updating cell values in the db after they change in the UI.
 
+- DataPage on the other hand does a lot. It is responsible for rendering all of the graphs and tables, but also updating all of the data when new records get created or deleted. Some of this functionality could be broken out nicely into separate services, but React does not like services for some reason. Maybe because using services for everything leads to inconsistencies in states.
 
+Very simple app. That is all.
 
 
 
