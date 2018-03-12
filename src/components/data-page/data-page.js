@@ -44,7 +44,6 @@ class DataPage extends Component {
                 margins = { { top: 50, right: 20, bottom: 30, left: 70 } } />
         );
     }
-    dateString
     /**
      * Format the dataset we originally received from our database into a format d3 likes
      * The new data object will contain its plot data in an array under the data key
@@ -152,14 +151,51 @@ class DataPage extends Component {
         })
         .catch(error => console.error(error));
     }
+
     /**
-     * Insert row
+     * Insert a new row
+     * Insert a new record into the database
+     * Bring back it's id
+     * Add it to the UI.
      */
-    insertRow() {
-        console.log('inserting row');
+    handleNewRowAddition() {
+        this.insertMewRecordIntoDataStore();
     }
 
-    
+    /**
+     * Insert new record into the database and return it's id
+     */
+    insertRow() {
+        fetch(baseUrl + '/record/new', {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+            }
+        }).then((response) => response.text())
+         .then((resronseText) => {
+            this.updateUiWithNewRecord(resronseText.split(' ')[1]);
+         });
+    }
+    /**
+     * Update the UI with the inserted row
+     */
+    updateUiWithNewRecord(newId) {
+        const record = {
+            _id: newId,
+            year: '2000',
+            month: '1',
+            kwh: '0',
+            bill: '0',
+            savings: '0'
+        };
+        let updatedData = update(this.state.tableData, {$splice: [[0, 0, record]]});
+        this.setState({tableData: updatedData});
+
+        console.log('inserted: ' + newId);
+    }
+
     /**
      * Send confirm message first
      * Update UI
@@ -185,7 +221,7 @@ class DataPage extends Component {
     }
 
     /**
-     * * Update UI
+     * Deletion: Update UI
      * @param {*} rowId 
      * @param {*} rowIndex 
      */
@@ -199,9 +235,8 @@ class DataPage extends Component {
             console.warning('Tried to delete recoed by id an index do not match: ' + rowId);
         }
     }
-
     /**
-     * * Update datastore
+     * Deletion: Update datastore
      * @param {*} rowId 
      */
     updateRecordDeletionInDataStore(rowId) {
@@ -261,8 +296,13 @@ class DataPage extends Component {
                     { graphContainer }
                     <div className="table-container">
                         <div className="data-table">
-                            <DataRow isHeader = { true } editable = {this.props.getAdminMode()} menuState = { this.props.getMenuState().toLowerCase() } />
+                            <DataRow isHeader = { true } editable = { this.props.getAdminMode() } menuState = { this.props.getMenuState().toLowerCase() } />
                             { tableRows }
+                        </div>
+                        <div className = { "add-row-button-container" + (this.props.getAdminMode() ? '' : ' hidden') } >
+                            <div className = { "add-row-button" + (this.props.getAdminMode() ? '' : ' hidden') }
+                                 onClick = { () => { this.insertRow() } } > 
+                            </div>
                         </div>
                     </div>
                 </div>

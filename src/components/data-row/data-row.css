@@ -13,12 +13,14 @@
 }
 
 .data-cell {
+    min-height: 25px;
     width: 15%;
     display: inline-block;
     margin: auto;
     text-align: center;
     border: none;
     background-color: rgb(204, 239, 255);
+    border-bottom: 1px solid rgb(50, 58, 75);;
 }
 .data-cell.editable:not(.head) {
     cursor: pointer;
@@ -32,12 +34,16 @@
 
 .delete-button-container {
     display: inline-block;
-    padding: 0px 2px 0px 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
 }
 .delete-button {
     display: inline-block;
-    color: red;
-    text-shadow: 1px 1px 3px #000;
+    width: 15px;
+    height: 15px;
+    background-image: url("../../images/close_2_30.png");
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
 }
 .delete-button:hover {
     opacity: 0.75;
@@ -45,7 +51,7 @@
 }
 .delete-button-container.hidden {
     display: inline-block;
-    padding: 0px 2px 0px 5px;
+    padding: none;
     visibility: hidden;
 }
 .delete-button.hidden {

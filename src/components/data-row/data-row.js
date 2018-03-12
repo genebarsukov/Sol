@@ -26,8 +26,7 @@ class DataRow extends Component {
         return (
             <div className={"delete-button-container" + (this.props.isHeader || !this.props.editable ? ' hidden' : '')}>
                 <div className={"delete-button" + (this.props.isHeader || !this.props.editable ? ' hidden' : '')}
-                        onClick = {() => { this.props.deleteRow(this.props.id, this.props.index)} } >
-                    x
+                     onClick = {() => { this.props.deleteRow(this.props.id, this.props.index)} } >
                 </div>
             </div>
         );

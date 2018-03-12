@@ -52,11 +52,11 @@ module.exports = function(app, db) {
     // POST Insert record
     app.post(appPath + '/record/new', (req, res) => {
         const record = {
-            year: sanitize(req.body.year) ? sanitize(req.body.year) : '',
-            month: sanitize(req.body.month) ? sanitize(req.body.month) : '',
-            kwh: sanitize(req.body.kwh) ? sanitize(req.body.kwh) : '',
-            bill: sanitize(req.body.bill) ? sanitize(req.body.bill) : '',
-            savings: sanitize(req.body.savings) ? sanitize(req.body.savings) : ''
+            year: '2000',
+            month: '1',
+            kwh: '0',
+            bill: '0',
+            savings: '0'
         };
         db.collection(dbName).insert(record, (error, result) => {
           if (error) {
@@ -79,10 +79,10 @@ module.exports = function(app, db) {
         console.log(req.body);
 
         const record = {
-            year: sanitize(req.body.year) ? sanitize(req.body.year) : 'no',
-            month: sanitize(req.body.month) ? sanitize(req.body.month) : 'no',
-            kwh: sanitize(req.body.kwh) ? sanitize(req.body.kwh) : 'no',
-            bill: sanitize(req.body.bill) ? sanitize(req.body.bill) : 'no',
+            year: sanitize(req.body.year) ? sanitize(req.body.year) : '',
+            month: sanitize(req.body.month) ? sanitize(req.body.month) : '',
+            kwh: sanitize(req.body.kwh) ? sanitize(req.body.kwh) : '',
+            bill: sanitize(req.body.bill) ? sanitize(req.body.bill) : '',
             savings: sanitize(req.body.savings) ? sanitize(req.body.savings) : ''
         };
         console.log(record);

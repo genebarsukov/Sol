@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../../logo.png';
+import logo from '../../images/logo.png';
 import './app.css';
 import DataMenu from '../data-menu/data-menu';
 import DataPage from '../data-page/data-page';
@@ -7,7 +7,7 @@ import pages from '../../pages';
 
 
 class App extends Component {
-
+    
     constructor() {
         super();
         let menuState = localStorage.getItem('menuState');
@@ -18,7 +18,6 @@ class App extends Component {
             adminMode: (adminMode === null ? false : adminMode),
             isAuthenticatedAdmin: true
         };
-
     }
 
     /**
