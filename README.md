@@ -10,13 +10,13 @@ In the upper right you can toggle a button to make the site editable. I was too 
 Both the admin mode setting and your current menu page are saved in the browser session object so they should persist even after you close the browser and decide to reload the page
 
 ### React
-Used to render UI components from API data
+Used to render UI components from API data, The react app was started with the npm react starter kit.
 
 ### Node / Express
-Runs the Json restful API on the back end
+Runs the Json restful API on the back end.
 
 ### MongoDB
-Database implemented remotely with mLab
+Database implemented remotely with mLab.
 
 ## Project Organization
 The project is composed of 3 parts, the React front end, the Node / Express Json API which lives on my server and a MondoDB dabase which is set up remotely on a third party provider side
