@@ -19,22 +19,33 @@
     width: 100%;
     height: 100%;
     text-align: center;
-    border: 1px solid #555;
 }
 
 
 .graph-container {
-    width: 50%;
-    height: 30%;
-    border: 1px solid #555;
+    display: inline-block;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 1rem;
+    background-color: rgb(204, 239, 255);
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font: 10px sans-serif;
 }
 
 .table-container {
-    width: 50%;
-    height: 30%;
-    border: 1px solid #555;
-    margin-left: auto;
-    margin-right: auto;
+    display: inline-block;
+    width: 100%;
+}
+.date-table {
+    display: inline-block;
+    width: 100%;
 }

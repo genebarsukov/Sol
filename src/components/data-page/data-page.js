@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './data-page.css';
 import DataRow from '../data-row/data-row';
-import LineChart from '../line-chart/line-chart';
+import LineChart, { parseFlatArray } from 'react-linechart';
+import * as d3 from 'd3';
 
 class DataPage extends Component {
 
@@ -9,7 +10,7 @@ class DataPage extends Component {
         super();
         this.state = {
             tableData: []
-        }
+        };
     }
     
     /**
@@ -24,7 +25,58 @@ class DataPage extends Component {
      * @param {*} metricType What kind of data will be displayed on the chart
      */
     renderChart(metricType) {
-        return ( <LineChart  menuState = { metricType } lineColor = { 'steelblue' } /> );
+        return (
+            <LineChart 
+                width = { 900 }
+                height = { 400 }
+                data = { this.formatDataForPlotting(this.state.tableData) }
+                xType={'time'}
+                interpolate={'linear'}
+                ticks= { 10 }
+                xDisplay = {d3.timeFormat("%Y-%m-%d") }
+                xLabel = { 'time '}
+                yLabel = { this.props.getMenuState() + ' data' }
+                margins = { { top: 50, right: 20, bottom: 30, left: 70 } } />
+        );
+    }
+    dateString
+    /**
+     * Format the dataset we originally received from our database into a format d3 likes
+     * The new data object will contain its plot data in an array under the data key
+     * The array will consist of objects containint a Date object and a numerical value object
+     * @param {*} rawData: Format: [{
+     *      _id: 'id',
+     *      year, 'year',
+     *      month: 'month',
+     *      kwh: 'kwh',
+     *      bill: 'bill',
+     *      savings: 'savings'
+     * }]
+     */
+    formatDataForPlotting(rawData) {
+        let formattedData = {
+            data: [],
+            color: 'steelblue'
+        }
+        let dataKey = this.props.getMenuState().toLowerCase()
+        if (dataKey === 'summary') {
+            return formattedData;
+        }
+        if (dataKey === 'usage') {
+            dataKey = 'kwh';
+        }
+
+        for (let dataPoint of rawData) {
+            let dateObj = new Date();
+            dateObj.setFullYear(dataPoint.year, dataPoint.month, 0);
+
+            let date = dateObj.getTime();
+            let value = parseInt(dataPoint[dataKey], 10);
+            formattedData.data.push({ date: date, value: value });
+        }
+        let flattenedData = parseFlatArray(formattedData.data, "date", ["value"]);
+
+        return flattenedData;
     }
 
     /**

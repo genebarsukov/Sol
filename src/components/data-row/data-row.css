@@ -1,17 +1,22 @@
 .data-row {
-    
+    border: none;
 }
 
-.header-row {
-    
+.header-row input {
+    font-weight: bold;
+    color: #FFF;
+    background-color: rgb(27, 32, 41);
 }
 
 .data-row-body {
     
 }
 
-
-
 .data-cell {
-    
+    width: 15%;
+    display: inline-block;
+    margin: auto;
+    text-align: center;
+    border: none;
+    background-color: rgb(204, 239, 255);
 }
