@@ -23,6 +23,7 @@
         "mongodb": "^2.2.16",
         "pondjs": "^0.8.8",
         "react": "^16.2.0",
+        "react-confirm-alert": "^2.0.2",
         "react-dom": "^16.2.0",
         "react-linechart": "^1.1.12",
         "react-scripts": "1.1.1",

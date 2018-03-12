@@ -49,3 +49,6 @@
     display: inline-block;
     width: 100%;
 }
+div#react-confirm-alert div.react-confirm-alert-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+}

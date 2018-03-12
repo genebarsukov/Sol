@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import './data-page.css';
 import DataRow from '../data-row/data-row';
 import LineChart, { parseFlatArray } from 'react-linechart';
+import { confirmAlert } from 'react-confirm-alert';
 import * as d3 from 'd3';
+import './data-page.css';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 let update = require('immutability-helper');
 let baseUrl = 'http://codewrencher.com:8000/sol'
 
@@ -123,7 +125,6 @@ class DataPage extends Component {
             console.warning('Tried to update recoed by id an index do not match: ' + rowId);
         }
     }
-    
     /**
      * Update record in db via API call
      */
@@ -157,11 +158,62 @@ class DataPage extends Component {
     insertRow() {
         console.log('inserting row');
     }
+
+    
     /**
-     * Delete row
+     * Send confirm message first
+     * Update UI
+     * Update record data store
      */
-    deleteRow(rowId) {
-        console.log('deleting row :' + rowId);
+    handleRowDeletion(rowId, rowIndex) {
+        confirmAlert({
+            title: 'You are about to Delete this record.',
+            message: 'This cannot be undone. Are you sure you want to do this?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => this.deleteRowFromUi(rowId, rowIndex)
+                },
+                {
+                    label: 'No',
+                    onClick: () => {}
+                }
+            ]
+        });
+
+        console.log('deleting row :' + rowId + '  :  ' + rowIndex);
+    }
+
+    /**
+     * * Update UI
+     * @param {*} rowId 
+     * @param {*} rowIndex 
+     */
+    deleteRowFromUi(rowId, rowIndex) {
+        if (this.state.tableData[rowIndex]._id === rowId) {
+            let updatedData = update(this.state.tableData, {$splice: [[rowIndex, 1]]});
+            
+            this.setState({tableData: updatedData});
+            this.updateRecordDeletionInDataStore(rowId);
+        } else {
+            console.warning('Tried to delete recoed by id an index do not match: ' + rowId);
+        }
+    }
+
+    /**
+     * * Update datastore
+     * @param {*} rowId 
+     */
+    updateRecordDeletionInDataStore(rowId) {
+        fetch(baseUrl + '/record/' + rowId, {
+            method: 'DELETE'
+        })
+        .then((response) => {
+            if (response.deleted === rowId) {
+                console.log('deletion successful');
+            }
+        })
+        .catch(error => console.error(error));
     }
 
     /**
@@ -187,7 +239,7 @@ class DataPage extends Component {
                         editable={this.props.getAdminMode()}
                         updateCellValue={this.updateCellValue.bind(this)}
                         insertRow={this.insertRow.bind(this)}
-                        deleteRow={this.deleteRow.bind(this)}/>
+                        deleteRow={this.handleRowDeletion.bind(this)} />
                 );
         });
 
@@ -209,7 +261,7 @@ class DataPage extends Component {
                     { graphContainer }
                     <div className="table-container">
                         <div className="data-table">
-                            <DataRow isHeader = { true } editable = { false } menuState = { this.props.getMenuState().toLowerCase() } />
+                            <DataRow isHeader = { true } editable = {this.props.getAdminMode()} menuState = { this.props.getMenuState().toLowerCase() } />
                             { tableRows }
                         </div>
                     </div>

@@ -20,14 +20,35 @@
     border: none;
     background-color: rgb(204, 239, 255);
 }
-
-.data-cell.editable {
+.data-cell.editable:not(.head) {
     cursor: pointer;
     background-color: rgb(236, 249, 255);
 }
-
-.data-cell.editable:focus {
+.data-cell.editable:focus:not(.head) {
     outline: none;
     cursor: text;
     box-shadow: inset 1px 2px 7px 1px rgb(50, 58, 75);
+}
+
+.delete-button-container {
+    display: inline-block;
+    padding: 0px 2px 0px 5px;
+}
+.delete-button {
+    display: inline-block;
+    color: red;
+    text-shadow: 1px 1px 3px #000;
+}
+.delete-button:hover {
+    opacity: 0.75;
+    cursor: pointer;
+}
+.delete-button-container.hidden {
+    display: inline-block;
+    padding: 0px 2px 0px 5px;
+    visibility: hidden;
+}
+.delete-button.hidden {
+    display: inline-block;
+    visibility: hidden;
 }

@@ -5,13 +5,17 @@ import DataMenu from '../data-menu/data-menu';
 import DataPage from '../data-page/data-page';
 import pages from '../../pages';
 
+
 class App extends Component {
 
     constructor() {
         super();
+        let menuState = localStorage.getItem('menuState');
+        let adminMode = localStorage.getItem('adminMode');
+
         this.state = {
-            menuState: 'summary',
-            adminMode: false,
+            menuState: (menuState === null ? 'summary' : menuState),
+            adminMode: (adminMode === null ? false : adminMode),
             isAuthenticatedAdmin: true
         };
 
@@ -26,6 +30,7 @@ class App extends Component {
         this.setState({
             menuState: newState
         })
+        localStorage.setItem('menuState', newState);
     }
 
     /**
@@ -41,9 +46,14 @@ class App extends Component {
 
     toggleAdminMode() {
         if (this.state.isAuthenticatedAdmin) {
-            this.setState({ adminMode: (this.state.adminMode ? false : true) })
+            let adminMode = (this.state.adminMode ? false : true)
+            this.setState({ adminMode: adminMode })
+
+            localStorage.setItem('adminMode', adminMode);
         } else {
             this.setState({ adminMode: false })
+
+            localStorage.setItem('adminMode', false);
         }
 
     }
