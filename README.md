@@ -38,11 +38,11 @@ Lives in /sol/api/routes/so-routes.js
 
 Very simple API. Here are all of its methods:
 
-GET Single record by id:     /sol/record/<id>
-GET All records:             /sol/allRecords
-POST Insert record:          /sol/record/new
-PUT Update record by id:     /sol/record/<id>
-DELETE Single record by id:  /sol/record/<id>
+- GET Single record by id:     /sol/record/<id>
+- GET All records:             /sol/allRecords
+- POST Insert record:          /sol/record/new
+- PUT Update record by id:     /sol/record/<id>
+- DELETE Single record by id:  /sol/record/<id>
 
 ## Front End
 This is a single page app with a menu on the left hand side and a data rendering area on the right.
